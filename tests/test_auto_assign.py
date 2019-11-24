@@ -4,7 +4,7 @@ import plazy
 
 class CMixParams(object):
     @plazy.auto_assign
-    def __init__(self, a, b, c=100, d='Minh'):
+    def __init__(self, a, b, c=100, d="Minh"):
         pass
 
 
@@ -16,7 +16,7 @@ class CFullRequiredParams(object):
 
 class CFullDefault(object):
     @plazy.auto_assign
-    def __init__(self, a=1, b='b', c=None):
+    def __init__(self, a=1, b="b", c=None):
         pass
 
 
@@ -38,11 +38,11 @@ def test_auto_assign_missing_required_param():
 
 
 def test_auto_assign_mix_params():
-    x = CMixParams(b=50, a=20, d='test')
+    x = CMixParams(b=50, a=20, d="test")
     assert x.a == 20
     assert x.b == 50
     assert x.c == 100
-    assert x.d == 'test'
+    assert x.d == "test"
 
 
 def test_auto_assign_required_params():
@@ -55,7 +55,7 @@ def test_auto_assign_required_params():
 def test_auto_assign_full_default_args():
     x = CFullDefault()
     assert x.a == 1
-    assert x.b == 'b'
+    assert x.b == "b"
     assert x.c is None
 
 

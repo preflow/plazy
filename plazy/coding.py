@@ -3,6 +3,7 @@ import sys
 from functools import wraps
 import inspect
 
+
 # https://stackoverflow.com/a/1389216
 
 
@@ -25,7 +26,15 @@ def auto_assign(func):
             names, varargs, keywords, defaults = inspect.getargspec(x)
         else:
             # https://docs.python.org/3.4/library/inspect.html#inspect.getfullargspec
-            names, varargs, keywords, defaults, kwonlyargs, kwonlydefaults, annotations = inspect.getfullargspec(x)
+            (
+                names,
+                varargs,
+                keywords,
+                defaults,
+                kwonlyargs,
+                kwonlydefaults,
+                annotations,
+            ) = inspect.getfullargspec(x)
         return names, varargs, keywords, defaults
 
     names, varargs, keywords, defaults = _get_arg_spec(func)
