@@ -1,0 +1,23 @@
+repos:
+-   repo: https://github.com/pre-commit/mirrors-autopep8
+    sha: v1.4.4  # Use the sha / tag you want to point at
+    hooks:
+    -   id: autopep8
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    sha: v1.2.3
+    hooks:
+    -   id: check-merge-conflict
+    -   id: debug-statements
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: fix-encoding-pragma
+    -   id: trailing-whitespace
+    -   id: flake8
+-   repo: local
+    hooks:
+    -   id: tests
+        name: run tests
+        entry: pytest ./tests/
+        language: system
+        files: '^tests/'
+        types: [python]
