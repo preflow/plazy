@@ -1,4 +1,4 @@
-<img src='https://img.shields.io/pypi/l/plazy.svg'> <img src='https://api.travis-ci.org/kyzas/plazy.svg?branch=master'> <img src='https://codecov.io/gh/kyzas/plazy/branch/master/graph/badge.svg'> <img src='https://img.shields.io/pypi/pyversions/plazy.svg'> <img src='https://img.shields.io/pypi/v/plazy.svg'> <img src='https://img.shields.io/pypi/dm/plazy.svg'>
+<img src='https://img.shields.io/pypi/l/plazy.svg'> <img src='https://codecov.io/gh/kyzas/plazy/branch/master/graph/badge.svg'> <img src='https://img.shields.io/pypi/pyversions/plazy.svg'> <img src='https://img.shields.io/pypi/v/plazy.svg'> <img src='https://img.shields.io/pypi/dm/plazy.svg'>
 
 # plazy
 Utilities for lazy Python developers
@@ -9,7 +9,25 @@ Utilities for lazy Python developers
 pip install plazy
 ```
 
-# USAGE
+# PLAZY FEATURES
+
+## Auto Assign
+
+Assign attributes of class with the passed arguments automatically.
+
+```
+import plazy
+
+class Cat(object):
+    @plazy.auto_assign
+    def __init__(self, name, owner='Kyzas'):
+        pass
+
+if __name__ == "__main__":
+    my_cat = Cat('Kittie')
+    print(my_cat.name)      # Kittie
+    print(my_cat.owner)     # Kyzas
+```
 
 # CONTRIBUTING
 
