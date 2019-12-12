@@ -11,6 +11,20 @@ pip install plazy
 
 # PLAZY FEATURES
 
+## List Files
+
+List files recursively in directory.
+
+```
+import plazy
+
+if __name__ == "__main__":
+    files = plazy.list_files(root='images',
+                            filter_func=lambda x : True if x.endswith('.jpg') else False,
+                            is_include_root=False)
+    print(files) # ['1.jpg', '2.jpg', '_sub_/4.jpg']
+```
+
 ## Auto Assign
 
 Assign attributes of class with the passed arguments automatically.
