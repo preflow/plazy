@@ -13,6 +13,8 @@ pip install plazy
 
 ## List Files
 
+Plazy version: 0.1.1+
+
 List files recursively in directory.
 
 ```
@@ -26,6 +28,8 @@ if __name__ == "__main__":
 ```
 
 ## Auto Assign
+
+Plazy version: 0.1.0+
 
 Assign attributes of class with the passed arguments automatically.
 

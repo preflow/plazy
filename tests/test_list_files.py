@@ -7,12 +7,12 @@ import shutil
 def test_list_files():
     # create root dir
     test_dirname = "_test_"
-    os.makedirs(test_dirname, exist_ok=True)
+    os.makedirs(test_dirname) if not os.path.isdir(test_dirname) else None
 
     # create sub dir
     test_subdir = "_sub_"
     test_subdir_full = os.path.join(test_dirname, test_subdir)
-    os.makedirs(test_subdir_full, exist_ok=True)
+    os.makedirs(test_subdir_full) if not os.path.isdir(test_subdir_full) else None
 
     # create dummy files in _test_
     test_files = ["1.jpg", "2.jpg", "3.jpeg"]
