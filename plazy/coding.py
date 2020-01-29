@@ -4,6 +4,33 @@ from functools import wraps
 import inspect
 import os
 
+# random_string()
+import string
+import random
+
+# ref: https://stackoverflow.com/a/2257449
+
+
+def random_string(size=6, digit=True, lower=True, upper=True):
+    assert (digit or lower or upper) is True
+    chars = []
+    chars += string.digits if digit else []
+    chars += string.ascii_lowercase if lower else []
+    chars += string.ascii_uppercase if upper else []
+    return "".join(random.choice(chars) for _ in range(size))
+
+
+def read_txt(path):
+    """
+    Read lines of text file, eliminate redundant characters of each line, skip the empty lines.
+    """
+    assert os.path.isfile(path), "plazy.open_txt @ path (%s) not found" % path
+    with open(path, "r") as f:
+        lines = f.readlines()
+        lines = [line.strip() for line in lines if len(line.strip()) > 0]
+        return lines
+    return []
+
 
 def list_files(root, filter_func=None, is_include_root=False):
     assert os.path.isdir(root), "Invalid folder: %s" % root
@@ -18,6 +45,7 @@ def list_files(root, filter_func=None, is_include_root=False):
                 result.append(fpath)
             pass
         pass
+    result = sorted(result)
     return result
 
 
