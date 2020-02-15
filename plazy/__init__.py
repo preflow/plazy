@@ -10,7 +10,7 @@ from .coding import (
 )
 
 
-__version__ = "0.1.3"
+__version__ = "0.1.3.1"
 __all__ = [
     "auto_assign",
     "list_files",

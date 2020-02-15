@@ -32,7 +32,7 @@ def b64encode(value, pretty=False):
 
 
 def b64decode(value):
-    return base64.b64decode(value).decode("utf-8")
+    return str(base64.b64decode(value).decode("utf-8"))
 
 
 # ref: https://stackoverflow.com/a/2257449
