@@ -8,6 +8,33 @@ import os
 import string
 import random
 
+# b64encode(), b64decode()
+import base64
+
+
+def unique(seq, sort=False, reverse=False):
+    is_tuple = isinstance(seq, tuple)
+    new_seq = list(sorted(set(seq), key=seq.index))
+    new_seq = sorted(new_seq) if sort else new_seq
+    new_seq = reversed(new_seq) if reverse else new_seq
+
+    if is_tuple:
+        return tuple(new_seq)
+    else:
+        return list(new_seq)
+
+
+def b64encode(value, pretty=False):
+    res = base64.b64encode(value.encode()).decode("utf-8")
+    if pretty:
+        res = res.replace("=", "")
+    return res
+
+
+def b64decode(value):
+    return base64.b64decode(value).decode("utf-8")
+
+
 # ref: https://stackoverflow.com/a/2257449
 
 

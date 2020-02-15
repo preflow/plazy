@@ -11,6 +11,40 @@ pip install plazy
 
 # PLAZY FEATURES
 
+## Unique list and string
+
+Plazy version: 0.1.3+
+
+Turn list or tuple into unique list/tuple, keep order or sort the list/tuple.
+
+``` python
+import plazy
+
+if __name__ == "__main__":
+    sample_t = (7, 3, 5, 3, 3, 7, 9)
+    unique_t = plazy.unique(seq=sample_t) # (7, 3, 5, 9)
+
+    sample_l = [7, 3, 5, 3, 3, 7, 9]
+    unique_l = plazy.unique(seq=sample_l) # [7, 3, 5, 9]
+
+    unique_rt = plazy.unique(seq=sample_t, sort=True, reverse=True) # (9, 7, 5, 3)
+```
+
+## Base64 encode and decode for string
+
+Plazy version: 0.1.3+
+
+Base64 encode and decode for string.
+
+``` python
+import plazy
+
+if __name__ == "__main__":
+    encoded_val = plazy.b64encode('plazy') # cGxhenk=
+    encoded_val = plazy.b64encode('plazy', pretty=True) # cGxhenk => Note: this string cannot be decoded!
+    original_val = plazy.b64decode('cGxhenk=') # plazy
+```
+
 ## Random String
 
 Plazy version: 0.1.2+
@@ -21,8 +55,8 @@ Generate random string.
 import plazy
 
 if __name__ == "__main__":
-    rstring = plazy.random_string(upper=False) # mzvn7b
     rstring = plazy.random_string() # iVr3FY
+    rstring = plazy.random_string(upper=False) # mzvn7b
     rstring = plazy.random_string(size=8) # XqVDuu5R
     rstring = plazy.random_string(size=6, digit=True, lower=False, upper=False) # 763099
     rstring = plazy.random_string(size=6, digit=False, lower=True, upper=False) # djzcch
