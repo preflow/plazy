@@ -25,7 +25,7 @@ def unique(seq, sort=False, reverse=False):
 
 
 def b64encode(value, pretty=False):
-    res = base64.b64encode(value.encode()).decode("utf-8")
+    res = str(base64.b64encode(value.encode()).decode("utf-8"))
     if pretty:
         res = res.replace("=", "")
     return res
