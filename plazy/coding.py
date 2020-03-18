@@ -2,7 +2,6 @@
 import sys
 from functools import wraps
 import inspect
-import os
 
 # random_string()
 import string
@@ -12,16 +11,12 @@ import random
 import base64
 
 
-def unique(seq, sort=False, reverse=False):
-    is_tuple = isinstance(seq, tuple)
-    new_seq = list(sorted(set(seq), key=seq.index))
-    new_seq = sorted(new_seq) if sort else new_seq
-    new_seq = reversed(new_seq) if reverse else new_seq
-
-    if is_tuple:
-        return tuple(new_seq)
-    else:
-        return list(new_seq)
+def setattr_from_dict(obj, kv, override=True):
+    for k, v in kv.items():
+        if hasattr(obj, k) and not override:
+            continue
+        setattr(obj, k, v)
+    return obj
 
 
 def b64encode(value, pretty=False):
@@ -45,35 +40,6 @@ def random_string(size=6, digit=True, lower=True, upper=True):
     chars += string.ascii_lowercase if lower else []
     chars += string.ascii_uppercase if upper else []
     return "".join(random.choice(chars) for _ in range(size))
-
-
-def read_txt(path):
-    """
-    Read lines of text file, eliminate redundant characters of each line, skip the empty lines.
-    """
-    assert os.path.isfile(path), "plazy.open_txt @ path (%s) not found" % path
-    with open(path, "r") as f:
-        lines = f.readlines()
-        lines = [line.strip() for line in lines if len(line.strip()) > 0]
-        return lines
-    return []
-
-
-def list_files(root, filter_func=None, is_include_root=False):
-    assert os.path.isdir(root), "Invalid folder: %s" % root
-    result = []
-    for root_dir, sub_dir_list, files in os.walk(root):
-        for f in files:
-            fpath = os.path.join(root_dir, f)
-            is_keep = filter_func(fpath) if filter_func else True
-            if is_keep:
-                if not is_include_root:
-                    fpath = fpath.replace(root, "").strip("/")
-                result.append(fpath)
-            pass
-        pass
-    result = sorted(result)
-    return result
 
 
 # https://stackoverflow.com/a/1389216

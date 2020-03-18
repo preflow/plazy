@@ -11,6 +11,61 @@ pip install plazy
 
 # PLAZY FEATURES
 
+## Set object attributes from dictionary
+
+Plazy version: 0.1.4+
+
+Dynamically set object attributes from dictionary @ runtime
+
+``` python
+import plazy
+
+# Our custom class
+class Person(object):
+    def __init__(self, name):
+        self.name = name
+
+if __name__ == "__main__":
+    p1 = Person(name="plazy") # init a Person object
+    plazy.setattr_from_dict(obj=p1, kv={
+        "name": "yzalp",
+        "age": 28,
+    })
+    print(p1.name) # "yzalp"
+    print(p1.age)  # 28
+
+    # set "override" to False
+    p2 = Person(name="plazy") # init a Person object
+    plazy.setattr_from_dict(obj=p2,
+                            override=False,
+                            kv={
+                                "name": "yzalp",
+                                "age": 28,
+                            })
+    print(p1.name) # "plazy" <- no overriding the pre-existed attribute due to "override=False"
+    print(p1.age)  # 28
+
+```
+
+## Check whether string is a number
+
+Plazy version: 0.1.4+
+
+Check whether string is a number
+
+``` python
+import plazy
+
+if __name__ == "__main__":
+    is_number = plazy.is_number("1")         # True
+    is_number = plazy.is_number("0.234")     # True
+    is_number = plazy.is_number("-0.234")    # True
+    is_number = plazy.is_number("1e3")       # True
+    is_number = plazy.is_number("plazy")     # False
+    is_number = plazy.is_number("1.23k9")    # False
+    is_number = plazy.is_number("x.3253254") # False
+```
+
 ## Unique list and string
 
 Plazy version: 0.1.3+
@@ -65,9 +120,11 @@ if __name__ == "__main__":
 
 ## Read Text File
 
-Plazy version: 0.1.2+
+Plazy version: ~~0.1.2+~~, 0.1.4+
 
-Read lines of text file, eliminate redundant characters of each line, skip the empty lines.
+~~Read lines of text file, eliminate redundant characters of each line, skip the empty lines.~~
+
+Read lines of text file as a list.
 
 ``` python
 import plazy
@@ -75,6 +132,35 @@ import plazy
 if __name__ == "__main__":
     lines = plazy.read_txt(path='/home/video-list.txt')
     print(lines) # ['<line#1>', '<line#2>', '<line#3>', ...]
+
+    # strip every text line, remove empty line in the list:
+    lines = plazy.read_txt(path='/home/video-list.txt', line_func=lambda x : x.strip(), remove_empty=True)
+
+    # -------------------------------
+    # deprecated @ v0.1.2
+    # lines = plazy.read_txt(path='/home/video-list.txt', strip=True)
+    # print(lines) # ['<line#1>', '<line#2>', '<line#3>', ...]
+    # lines = plazy.read_txt(path='/home/video-list.txt', strip=False) # no stripping
+```
+
+## Write Text File
+
+Plazy version: 0.1.4+
+
+Write text file.
+
+``` python
+import os
+import plazy
+
+if __name__ == "__main__":
+    path = '/home/plazy.txt'
+    lines = [
+        "hello",
+        "world",
+    ]
+    plazy.write_txt(path=path, lines=lines)
+    assert os.path.isfile(path)
 ```
 
 ## List Files
