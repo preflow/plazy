@@ -36,7 +36,7 @@ def test_read_txt_line_func_no_remove_empty():
         f.write("\n".join(TXT_CONTENT))
 
     lines = plazy.read_txt(
-        path=dummy_file, line_func=lambda x: x.strip(), remove_empty=False
+        path=dummy_file, line_func=lambda x: x.strip(), skip_empty_line=False
     )
     # clean
     shutil.rmtree(test_dirname)
@@ -59,7 +59,7 @@ def test_read_txt_line_func_remove_empty():
         f.write("\n".join(TXT_CONTENT))
 
     lines = plazy.read_txt(
-        path=dummy_file, line_func=lambda x: x.strip(), remove_empty=True
+        path=dummy_file, line_func=lambda x: x.strip(), skip_empty_line=True
     )
     # clean
     shutil.rmtree(test_dirname)
