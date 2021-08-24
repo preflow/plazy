@@ -7,9 +7,6 @@ import inspect
 import string
 import random
 
-# b64encode(), b64decode()
-import base64
-
 
 def setattr_from_dict(obj, kv, override=True):
     for k, v in kv.items():
@@ -19,30 +16,14 @@ def setattr_from_dict(obj, kv, override=True):
     return obj
 
 
-def b64encode(value, pretty=False):
-    res = str(base64.b64encode(value.encode()).decode("utf-8"))
-    if pretty:
-        res = res.replace("=", "")
-    return res
-
-
-def b64decode(value):
-    return str(base64.b64decode(value).decode("utf-8"))
-
-
-# ref: https://stackoverflow.com/a/2257449
-
-
 def random_string(size=6, digit=True, lower=True, upper=True):
+    # ref: https://stackoverflow.com/a/2257449
     assert (digit or lower or upper) is True
     chars = []
     chars += string.digits if digit else []
     chars += string.ascii_lowercase if lower else []
     chars += string.ascii_uppercase if upper else []
     return "".join(random.choice(chars) for _ in range(size))
-
-
-# https://stackoverflow.com/a/1389216
 
 
 def auto_assign(func):
@@ -56,6 +37,7 @@ def auto_assign(func):
     >>> p = process('halt', True)
     >>> p.cmd, p.reachable, p.user
     ('halt', True, 'root')
+    Reference: https://stackoverflow.com/a/1389216
     """
 
     def _get_arg_spec(x):

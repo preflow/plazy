@@ -1,10 +1,22 @@
 # -*- coding: utf-8 -*-
-# https://stackoverflow.com/q/354038/3973224
+import base64
+
+
+def b64encode(value, pretty=False):
+    res = str(base64.b64encode(value.encode()).decode("utf-8"))
+    if pretty:
+        res = res.replace("=", "")
+    return res
+
+
+def b64decode(value):
+    return str(base64.b64decode(value).decode("utf-8"))
 
 
 def is_number(s):
     """
     Check whether string is number
+    Reference: https://stackoverflow.com/q/354038/3973224
     """
     try:
         float(s)

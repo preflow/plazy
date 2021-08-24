@@ -2,8 +2,6 @@
 from .coding import (
     auto_assign,
     random_string,
-    b64encode,
-    b64decode,
     setattr_from_dict,
 )
 
@@ -14,6 +12,8 @@ from .file import (
 )
 
 from .data import (
+    b64encode,
+    b64decode,
     unique,
     is_number,
 )

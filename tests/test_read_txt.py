@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import plazy
 import os
-import shutil
+
+# import shutil
 
 TXT_CONTENT = [
     "1.jpg,3,person,0.4,0.5,0.6,0.7",
@@ -15,13 +16,14 @@ def test_read_txt():
     # create root dir
     test_dirname = "_test_"
     os.makedirs(test_dirname) if not os.path.isdir(test_dirname) else None
-    dummy_file = os.path.join(test_dirname, "dummy.txt")
+    dummy_file = os.path.abspath(os.path.join(test_dirname, "dummy.txt"))
     with open(dummy_file, "w") as f:
         f.write("\n".join(TXT_CONTENT))
 
     lines = plazy.read_txt(path=dummy_file, line_func=None)
     # clean
-    shutil.rmtree(test_dirname)
+    os.remove(dummy_file)
+    # shutil.rmtree(test_dirname)
 
     assert lines == TXT_CONTENT
     pass
@@ -31,7 +33,7 @@ def test_read_txt_line_func_no_remove_empty():
     # create root dir
     test_dirname = "_test_"
     os.makedirs(test_dirname) if not os.path.isdir(test_dirname) else None
-    dummy_file = os.path.join(test_dirname, "dummy.txt")
+    dummy_file = os.path.abspath(os.path.join(test_dirname, "dummy.txt"))
     with open(dummy_file, "w") as f:
         f.write("\n".join(TXT_CONTENT))
 
@@ -39,7 +41,8 @@ def test_read_txt_line_func_no_remove_empty():
         path=dummy_file, line_func=lambda x: x.strip(), skip_empty_line=False
     )
     # clean
-    shutil.rmtree(test_dirname)
+    os.remove(dummy_file)
+    # shutil.rmtree(test_dirname)
 
     assert len(lines) == 4
     assert len(lines[0]) == len(TXT_CONTENT[0])
@@ -54,7 +57,7 @@ def test_read_txt_line_func_remove_empty():
     # create root dir
     test_dirname = "_test_"
     os.makedirs(test_dirname) if not os.path.isdir(test_dirname) else None
-    dummy_file = os.path.join(test_dirname, "dummy.txt")
+    dummy_file = os.path.abspath(os.path.join(test_dirname, "dummy.txt"))
     with open(dummy_file, "w") as f:
         f.write("\n".join(TXT_CONTENT))
 
@@ -62,7 +65,8 @@ def test_read_txt_line_func_remove_empty():
         path=dummy_file, line_func=lambda x: x.strip(), skip_empty_line=True
     )
     # clean
-    shutil.rmtree(test_dirname)
+    os.remove(dummy_file)
+    # shutil.rmtree(test_dirname)
 
     assert len(lines) == 3
     assert len(lines[0]) == len(TXT_CONTENT[0])

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import plazy
 import os
-import shutil
+
+# import shutil
 
 TXT_CONTENT = [
     "welcome",
@@ -14,7 +15,9 @@ def test_write_txt_default():
     # init
     test_dirname = "_test_"
     os.makedirs(test_dirname) if not os.path.isdir(test_dirname) else None
-    dummy_file = os.path.join(test_dirname, "dummy_%s.txt" % (plazy.random_string()))
+    dummy_file = os.path.abspath(
+        os.path.join(test_dirname, "dummy_%s.txt" % (plazy.random_string()))
+    )
 
     plazy.write_txt(path=dummy_file, lines=TXT_CONTENT)
     with open(dummy_file, "r") as f:
@@ -22,7 +25,8 @@ def test_write_txt_default():
     lines = [line.rstrip("\n") for line in lines]
 
     # clean
-    shutil.rmtree(test_dirname)
+    os.remove(dummy_file)
+    # shutil.rmtree(test_dirname)
 
     assert lines == TXT_CONTENT
 
@@ -31,7 +35,9 @@ def test_write_txt_cat_str():
     # init
     test_dirname = "_test_"
     os.makedirs(test_dirname) if not os.path.isdir(test_dirname) else None
-    dummy_file = os.path.join(test_dirname, "dummy_%s.txt" % (plazy.random_string()))
+    dummy_file = os.path.abspath(
+        os.path.join(test_dirname, "dummy_%s.txt" % (plazy.random_string()))
+    )
 
     cstr = ","
     plazy.write_txt(path=dummy_file, lines=TXT_CONTENT, cat_str=cstr)
@@ -40,6 +46,7 @@ def test_write_txt_cat_str():
     lines = [line.rstrip("\n") for line in lines]
 
     # clean
-    shutil.rmtree(test_dirname)
+    os.remove(dummy_file)
+    # shutil.rmtree(test_dirname)
 
     assert lines[0] == cstr.join(TXT_CONTENT)

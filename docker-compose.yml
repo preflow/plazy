@@ -1,0 +1,11 @@
+version: '3.3'
+services:
+    python3:
+        image: python:3.8
+        user: root
+        ipc: host
+        tty: true
+        volumes:
+            - $PWD:/usr/src/myapp/
+        command: /bin/sh -c "while true; do sleep 5m; done"
+        restart: unless-stopped     # or "always"

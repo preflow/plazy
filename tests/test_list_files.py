@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import plazy
 import os
-import shutil
+
+# import shutil
 
 
 def test_list_files():
@@ -31,7 +32,11 @@ def test_list_files():
         is_include_root=False,
     )
     # clean
-    shutil.rmtree(test_dirname)
+    # os.remove(os.path.join(test_dirname, "1.jpg"))
+    # os.remove(os.path.join(test_dirname, "2.jpg"))
+    # os.remove(os.path.join(test_dirname, "3.jpeg"))
+    # os.remove(test_file_in_subdir)
+    # shutil.rmtree(test_dirname)
 
     assert isinstance(result, (tuple, list))
     assert len(result) == 3

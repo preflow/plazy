@@ -10,12 +10,12 @@ pip install plazy
 # Index
 
 - [Coding](#coding)
-  - [plazy.random_string(size=6, digit=True, lower=True, upper=True)](#random_string)
-  - [plazy.b64encode(value, pretty=False)](#b64encode)
-  - [plazy.b64decode(value)](#b64decode)
+  - [plazy.random_string(size=6, digit=True, lower=True, upper=True)](#random_string)  
   - [plazy.setattr_from_dict(obj, kv, override=True)](#setattr_from_dict)
   - [@plazy.auto_assign](#auto_assign)
 - [Data](#data)
+  - [plazy.b64encode(value, pretty=False)](#b64encode)
+  - [plazy.b64decode(value)](#b64decode)
   - [plazy.is_number(s)](#is_number)
   - [plazy.unique(seq, sort=False, reverse=False)](#unique)
 - [File](#file)
@@ -52,38 +52,6 @@ if __name__ == "__main__":
     rstring = plazy.random_string(size=6, digit=True, lower=False, upper=False) # 763099
     rstring = plazy.random_string(size=6, digit=False, lower=True, upper=False) # djzcch
     rstring = plazy.random_string(size=6, digit=False, lower=False, upper=True) # BGBMQN
-```
-
-[:link: Back to Index](#index)
-
-### b64encode
-
-### b64decode
-
-Plazy version: 0.1.3+
-
-Base64 encode and decode for string.
-
-**plazy.b64encode(**
-
-- **value**: value to encode base64
-- pretty: remove "=" character at the end after encoding. Default: False
-
-**)**
-
-**plazy.b64decode(**
-
-- **value**: encoded base64 value to decode
-
-**)**
-
-``` python
-import plazy
-
-if __name__ == "__main__":
-    encoded_val = plazy.b64encode('plazy') # cGxhenk=
-    encoded_val = plazy.b64encode('plazy', pretty=True) # cGxhenk => Note: this string cannot be decoded!
-    original_val = plazy.b64decode('cGxhenk=') # plazy
 ```
 
 [:link: Back to Index](#index)
@@ -160,6 +128,38 @@ if __name__ == "__main__":
 
 ## Data
 
+### b64encode
+
+### b64decode
+
+Plazy version: 0.1.3+
+
+Base64 encode and decode for string.
+
+**plazy.b64encode(**
+
+- **value**: value to encode base64
+- pretty: remove "=" character at the end after encoding. Default: False
+
+**)**
+
+**plazy.b64decode(**
+
+- **value**: encoded base64 value to decode
+
+**)**
+
+``` python
+import plazy
+
+if __name__ == "__main__":
+    encoded_val = plazy.b64encode('plazy') # cGxhenk=
+    encoded_val = plazy.b64encode('plazy', pretty=True) # cGxhenk => Note: this string cannot be decoded!
+    original_val = plazy.b64decode('cGxhenk=') # plazy
+```
+
+[:link: Back to Index](#index)
+
 ### is_number
 
 Plazy version: 0.1.4+
@@ -205,7 +205,7 @@ Turn list or tuple into unique list/tuple, keep order or sort the list/tuple.
 import plazy
 
 if __name__ == "__main__":
-    unique_t = plazy.unique(seq=(7, 3, 5, 3, 3, 7, 9)) # -> (7, 3, 5, 9)    
+    unique_t = plazy.unique(seq=(7, 3, 5, 3, 3, 7, 9)) # -> (7, 3, 5, 9)  
     unique_l = plazy.unique(seq=[7, 3, 5, 3, 3, 7, 9]) # -> [7, 3, 5, 9]
     unique_rt = plazy.unique(seq=(7, 3, 5, 3, 3, 7, 9), sort=True, reverse=True) # -> (9, 7, 5, 3)
 ```
@@ -239,8 +239,8 @@ if __name__ == "__main__":
 
     # strip every text line, remove empty line in the list:
     lines = plazy.read_txt(
-        path='/home/video-list.txt', 
-        line_func=lambda x : x.strip(), 
+        path='/home/video-list.txt',
+        line_func=lambda x : x.strip(),
         skip_empty_line=True
     )
 
