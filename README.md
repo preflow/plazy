@@ -15,6 +15,8 @@ pip install plazy
   - [@plazy.auto_assign](#auto_assign)
   - [@plazy.auto_assign_strict](#auto_assign_strict)
   - [@plazy.cloneable](#cloneable)
+  - [plazy.tic](#tic)
+  - [plazy.toc](#toc)
 - [Data](#data)
   - [plazy.b64encode(value, pretty=False)](#b64encode)
   - [plazy.b64decode(value)](#b64decode)
@@ -110,7 +112,7 @@ Plazy version: 0.1.5+
 
 Assign attributes of class with the passed arguments automatically.
 
-**@play.auto_assign**
+**@plazy.auto_assign**
 
 ``` python
 import plazy
@@ -144,7 +146,7 @@ Plazy version: 0.1.5+
 
 Assign attributes of class with the passed arguments automatically, strictly check the parameters passed to the function.
 
-**@play.auto_assign_strict**
+**@plazy.auto_assign_strict**
 
 ``` python
 import plazy
@@ -170,7 +172,7 @@ Plazy version: 0.1.5+
 
 Mark constructor of class as being cloneable. Method "clone" is used to clone a new instance, its arguments are the same with the constructor.
 
-**@play.cloneable**
+**@plazy.cloneable**
 
 ``` python
 import plazy
@@ -213,6 +215,78 @@ if __name__ == "__main__":
     print(his_dog.get_info()) # {'name': '<Dog Name>', 'owner': 'James', 'age': 10}
     print(her_dog.get_info()) # {'name': 'Husky', 'owner': 'Bella', 'age': 5}
     print(her_dog.note)       # Super Cute
+```
+
+[:link: Back to Index](#index)
+
+### tic
+
+Plazy version: 0.1.5+
+
+Start timer
+
+**plazy.tic(**
+
+- **\*names***: name list
+
+**)**
+
+``` python
+import plazy
+
+def foo():
+    total = 0
+    for _ in range(100000):
+        total += 1
+    return total
+
+if __name__ == "__main__":
+    plazy.tic()                 # T1
+    plazy.tic("B")              # T2
+    plazy.tic("C", "D", "E")    # T3
+    foo()
+    dt1 = plazy.toc()           # elapsed time since T1
+    dt2 = plazy.toc("B")        # elapsed time since T2
+    dt3 = plazy.toc("C", "D")   # elapsed time since T3
+    foo()
+    dt4 = plazy.toc("E")        # elapsed time since T3
+    dt5 = plazy.toc("B")        # elapsed time since T2
+    print(dt1)                  # 0.009924173355102539
+    print(dt2)                  # 0.009925603866577148
+    print(dt3)                  # [0.00992727279663086, 0.00992727279663086]
+    print(dt4)                  # 0.020497798919677734
+    print(dt5)                  # 0.020506620407104492
+```
+
+[:link: Back to Index](#index)
+
+### toc
+
+Plazy version: 0.1.5+
+
+Get elapsed time(s) by name(s)
+
+**plazy.toc(**
+
+- **\*names***: name list
+- **default**: default value if name not found. Default: 0
+
+**)**
+
+``` python
+import plazy
+
+def foo():
+    total = 0
+    for _ in range(100000):
+        total += 1
+    return total
+
+if __name__ == "__main__":
+    plazy.tic()
+    foo()
+    elapsed_seconds = plazy.toc()                   # 0.0098724365234375
+    elapsed_invalid = plazy.toc("B", default=-1)    # -1 (name "B" does not exist, return default value)
 ```
 
 [:link: Back to Index](#index)

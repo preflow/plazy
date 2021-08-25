@@ -1,12 +1,54 @@
 # -*- coding: utf-8 -*-
-import copy
 import sys
 from functools import wraps
 import inspect
 
-# random_string()
 import string
 import random
+import copy
+import time
+
+
+def random_string(size=6, digit=True, lower=True, upper=True):
+    # ref: https://stackoverflow.com/a/2257449
+    assert (digit or lower or upper) is True
+    chars = []
+    chars += string.digits if digit else []
+    chars += string.ascii_lowercase if lower else []
+    chars += string.ascii_uppercase if upper else []
+    return "".join(random.choice(chars) for _ in range(size))
+
+
+class SingletonTimeStore:
+    __instance = None
+
+    @staticmethod
+    def getInstance():
+        """Static access method."""
+        if SingletonTimeStore.__instance is None:
+            SingletonTimeStore()
+        return SingletonTimeStore.__instance
+
+    def __init__(self):
+        """Virtually private constructor."""
+        if SingletonTimeStore.__instance is not None:
+            raise Exception("This class is a singleton!")
+        else:
+            SingletonTimeStore.__instance = self
+        self.default_name = random_string()
+        self.data = {}
+
+    def set_time(self, name, value):
+        self.data[name] = value
+
+    def get_time(self, name, default=0):
+        return self.data.get(name, default)
+
+    def has_name(self, name):
+        return name in self.data
+
+
+g_time_store = SingletonTimeStore.getInstance()
 
 # ----------------------
 # | Internal functions |
@@ -57,14 +99,39 @@ def setattr_from_dict(obj, kv, override=True):
     return obj
 
 
-def random_string(size=6, digit=True, lower=True, upper=True):
-    # ref: https://stackoverflow.com/a/2257449
-    assert (digit or lower or upper) is True
-    chars = []
-    chars += string.digits if digit else []
-    chars += string.ascii_lowercase if lower else []
-    chars += string.ascii_uppercase if upper else []
-    return "".join(random.choice(chars) for _ in range(size))
+def tic(*names):
+    now_ts = time.time()
+    name_arr = list(names) + (
+        [
+            g_time_store.default_name,
+        ]
+        if len(names) == 0
+        else []
+    )
+    for n in name_arr:
+        g_time_store.set_time(name=n, value=now_ts)
+    return now_ts
+
+
+def toc(*names, default=0):
+    now_ts = time.time()
+    name_arr = list(names) + (
+        [
+            g_time_store.default_name,
+        ]
+        if len(names) == 0
+        else []
+    )
+    result = [
+        (now_ts - g_time_store.get_time(name=n))
+        if g_time_store.has_name(n)
+        else default
+        for n in name_arr
+    ]
+    if len(name_arr) <= 1:
+        return result[0]
+    else:
+        return result
 
 
 # --------------

@@ -5,6 +5,8 @@ from .coding import (
     cloneable,
     random_string,
     setattr_from_dict,
+    tic,
+    toc,
 )
 
 from .file import (
@@ -24,6 +26,8 @@ __version__ = "0.1.5"
 __all__ = [
     "auto_assign",
     "auto_assign_strict",
+    "tic",
+    "toc",
     "cloneable",
     "list_files",
     "read_txt",
