@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from .coding import (
     auto_assign,
+    auto_assign_strict,
+    cloneable,
     random_string,
     setattr_from_dict,
 )
@@ -18,9 +20,11 @@ from .data import (
     is_number,
 )
 
-__version__ = "0.1.4"
+__version__ = "0.1.5"
 __all__ = [
     "auto_assign",
+    "auto_assign_strict",
+    "cloneable",
     "list_files",
     "read_txt",
     "write_txt",

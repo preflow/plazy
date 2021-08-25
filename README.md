@@ -13,6 +13,8 @@ pip install plazy
   - [plazy.random_string(size=6, digit=True, lower=True, upper=True)](#random_string)  
   - [plazy.setattr_from_dict(obj, kv, override=True)](#setattr_from_dict)
   - [@plazy.auto_assign](#auto_assign)
+  - [@plazy.auto_assign_strict](#auto_assign_strict)
+  - [@plazy.cloneable](#cloneable)
 - [Data](#data)
   - [plazy.b64encode(value, pretty=False)](#b64encode)
   - [plazy.b64decode(value)](#b64decode)
@@ -104,7 +106,7 @@ if __name__ == "__main__":
 
 ### auto_assign
 
-Plazy version: 0.1.0+
+Plazy version: 0.1.5+
 
 Assign attributes of class with the passed arguments automatically.
 
@@ -116,12 +118,101 @@ import plazy
 class Cat(object):
     @plazy.auto_assign
     def __init__(self, name, owner='Kyzas'):
+        # no variable assignment needed
+        pass
+
+    def get_age(self):
+        return self.age if hasattr(self, "age") else None
+
+    def get_type(self):
+        return self.type if hasattr(self, "type") else None
+
+if __name__ == "__main__":
+    mydict = {"type": "pet"}
+    my_cat = Cat('Kittie', age=10, **mydict) # "age" and "type" is unexpected arguments
+    print(my_cat.name)          # Kittie
+    print(my_cat.owner)         # Kyzas
+    print(my_cat.get_age())     # 10
+    print(my_cat.get_type())    # pet
+```
+
+[:link: Back to Index](#index)
+
+### auto_assign_strict
+
+Plazy version: 0.1.5+
+
+Assign attributes of class with the passed arguments automatically, strictly check the parameters passed to the function.
+
+**@play.auto_assign_strict**
+
+``` python
+import plazy
+
+class Cat(object):
+    @plazy.auto_assign_strict
+    def __init__(self, name, owner='Kyzas'):
         pass
 
 if __name__ == "__main__":
-    my_cat = Cat('Kittie')
+    my_cat = Cat('Kittie', 'Minh')
     print(my_cat.name)      # Kittie
-    print(my_cat.owner)     # Kyzas
+    print(my_cat.owner)     # Minh
+    his_cat = Cat('Lulu', 'Peter', 'Mary')  # TypeError
+    her_cat = Cat('Kittie', age=10)         # TypeError
+```
+
+[:link: Back to Index](#index)
+
+### cloneable
+
+Plazy version: 0.1.5+
+
+Mark constructor of class as being cloneable. Method "clone" is used to clone a new instance, its arguments are the same with the constructor.
+
+**@play.cloneable**
+
+``` python
+import plazy
+
+class Cat(object):
+    @plazy.cloneable
+    def __init__(self, name, owner='Kyzas'):
+        self.name = name
+        self.owner = owner
+        pass
+
+    def get_info(self):
+        return {"name": self.name, "owner": self.owner}
+
+class Dog(object):
+    # combine auto_assign and cloneable decorators
+    @plazy.cloneable
+    @plazy.auto_assign
+    def __init__(self, name, owner='Kyzas'):
+        pass
+
+    def get_info(self):
+        result = {"name": self.name, "owner": self.owner}
+        if hasattr(self, "age"):
+            result["age"] = self.age
+        else:
+            result["age"] = -1
+        return result
+
+if __name__ == "__main__":
+    cat_template = Cat('<Cat Name>', '<Owner Name>')
+    his_cat = cat_template.clone('Lulu', 'Peter')
+    her_cat = cat_template.clone(name='Jessie')
+    print(his_cat.get_info()) # {'name': 'Lulu', 'owner': 'Peter'}
+    print(her_cat.get_info()) # {'name': 'Jessie', 'owner': '<Owner Name>'}
+
+    dog_template = Dog(name="<Dog Name>", owner="<Owner Name>", age=10) # age=10 by default
+    his_dog = dog_template.clone(owner='James')
+    her_dog = dog_template.clone(name="Husky", owner="Bella", age=5, note="Super Cute")
+    print(his_dog.get_info()) # {'name': '<Dog Name>', 'owner': 'James', 'age': 10}
+    print(her_dog.get_info()) # {'name': 'Husky', 'owner': 'Bella', 'age': 5}
+    print(her_dog.note)       # Super Cute
 ```
 
 [:link: Back to Index](#index)
