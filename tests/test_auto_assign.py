@@ -3,6 +3,12 @@ import plazy
 from scake import Scake
 
 
+class CStrict(object):
+    @plazy.auto_assign_strict
+    def __init__(self, a, b, c=15):
+        pass
+
+
 class CMixParams(object):
     @plazy.auto_assign
     def __init__(self, a, b, c=100, d="Minh"):
@@ -32,6 +38,29 @@ class CNoArg(object):
     def __init__(self):
         self.me = 10
         pass
+
+
+def test_auto_assign_exceed_params():
+    try:
+        CMixParams(10, 20, 30, 40, 50)
+        assert False
+    except Exception:
+        assert True
+
+
+def test_auto_assign_strict_successful():
+    x = CStrict(10, 20)
+    assert x.a == 10
+    assert x.b == 20
+    assert x.c == 15
+
+
+def test_auto_assign_strict_failed():
+    try:
+        CStrict(10, 20, d=30)
+        assert False
+    except Exception:
+        assert True
 
 
 def test_auto_assign_colab_with_scake_ref():

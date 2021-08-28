@@ -3,6 +3,7 @@ services:
     python3:
         image: python:3.8
         user: root
+        container_name: plazy
         ipc: host
         tty: true
         volumes:

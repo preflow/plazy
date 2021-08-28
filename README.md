@@ -1,4 +1,4 @@
-<img src='https://img.shields.io/pypi/l/plazy.svg'> <img src='https://codecov.io/gh/kyzas/plazy/branch/master/graph/badge.svg'> <img src='https://img.shields.io/pypi/pyversions/plazy.svg'> <img src='https://img.shields.io/pypi/v/plazy.svg'> <img src='https://img.shields.io/pypi/dm/plazy.svg'> <img src='https://img.shields.io/badge/code%20style-black-000000.svg'>
+<img src='https://img.shields.io/pypi/l/plazy.svg'> <img src='https://codecov.io/gh/kyzas/plazy/branch/master/graph/badge.svg'> <img src='https://img.shields.io/pypi/pyversions/plazy.svg'> <img src='https://img.shields.io/pypi/v/plazy.svg'> <img src='https://img.shields.io/pypi/dm/plazy.svg'> <img src='https://img.shields.io/badge/code%20style-black-000000.svg'> <img src='https://readthedocs.org/projects/plazy/badge/?version=latest&style=plastic'>
 
 # plazy
 Utilities for lazy Python developers
@@ -13,6 +13,12 @@ pip install plazy
   - [plazy.random_string(size=6, digit=True, lower=True, upper=True)](#random_string)  
   - [plazy.setattr_from_dict(obj, kv, override=True)](#setattr_from_dict)
   - [@plazy.auto_assign](#auto_assign)
+  - [@plazy.auto_assign_strict](#auto_assign_strict)
+  - [@plazy.cloneable](#cloneable)
+  - [plazy.tic(&#42;names)](#tic)
+  - [plazy.toc(&#42;names, default=0)](#toc)
+  - [plazy.ts2dt(ts, format="%Y/%m/%d %H:%M:%S.%f")](#ts2dt)
+  - [plazy.dt2ts(dt, format="%Y/%m/%d %H:%M:%S.%f")](#dt2ts)
 - [Data](#data)
   - [plazy.b64encode(value, pretty=False)](#b64encode)
   - [plazy.b64decode(value)](#b64decode)
@@ -104,11 +110,13 @@ if __name__ == "__main__":
 
 ### auto_assign
 
-Plazy version: 0.1.0+
+Plazy version: 0.1.5+
 
 Assign attributes of class with the passed arguments automatically.
 
-**@play.auto_assign**
+
+
+**@plazy.auto_assign**
 
 ``` python
 import plazy
@@ -116,12 +124,220 @@ import plazy
 class Cat(object):
     @plazy.auto_assign
     def __init__(self, name, owner='Kyzas'):
+        # no variable assignment needed
+        pass
+
+    def get_age(self):
+        return self.age if hasattr(self, "age") else None
+
+    def get_type(self):
+        return self.type if hasattr(self, "type") else None
+
+if __name__ == "__main__":
+    mydict = {"type": "pet"}
+    my_cat = Cat('Kittie', age=10, **mydict) # "age" and "type" is unexpected arguments
+    print(my_cat.name)          # Kittie
+    print(my_cat.owner)         # Kyzas
+    print(my_cat.get_age())     # 10
+    print(my_cat.get_type())    # pet
+```
+
+[:link: Back to Index](#index)
+
+### auto_assign_strict
+
+Plazy version: 0.1.5+
+
+Assign attributes of class with the passed arguments automatically, strictly check the parameters passed to the function.
+
+**@plazy.auto_assign_strict**
+
+``` python
+import plazy
+
+class Cat(object):
+    @plazy.auto_assign_strict
+    def __init__(self, name, owner='Kyzas'):
         pass
 
 if __name__ == "__main__":
-    my_cat = Cat('Kittie')
+    my_cat = Cat('Kittie', 'Minh')
     print(my_cat.name)      # Kittie
-    print(my_cat.owner)     # Kyzas
+    print(my_cat.owner)     # Minh
+    his_cat = Cat('Lulu', 'Peter', 'Mary')  # TypeError
+    her_cat = Cat('Kittie', age=10)         # TypeError
+```
+
+[:link: Back to Index](#index)
+
+### cloneable
+
+Plazy version: 0.1.5+
+
+Mark constructor of class as being cloneable. Method "clone" is used to clone a new instance, its arguments are the same with the constructor.
+
+**@plazy.cloneable**
+
+``` python
+import plazy
+
+class Cat(object):
+    @plazy.cloneable
+    def __init__(self, name, owner='Kyzas'):
+        self.name = name
+        self.owner = owner
+        pass
+
+    def get_info(self):
+        return {"name": self.name, "owner": self.owner}
+
+class Dog(object):
+    # combine auto_assign and cloneable decorators
+    @plazy.cloneable
+    @plazy.auto_assign
+    def __init__(self, name, owner='Kyzas'):
+        pass
+
+    def get_info(self):
+        result = {"name": self.name, "owner": self.owner}
+        if hasattr(self, "age"):
+            result["age"] = self.age
+        else:
+            result["age"] = -1
+        return result
+
+if __name__ == "__main__":
+    cat_template = Cat('<Cat Name>', '<Owner Name>')
+    his_cat = cat_template.clone('Lulu', 'Peter')
+    her_cat = cat_template.clone(name='Jessie')
+    print(his_cat.get_info()) # {'name': 'Lulu', 'owner': 'Peter'}
+    print(her_cat.get_info()) # {'name': 'Jessie', 'owner': '<Owner Name>'}
+
+    dog_template = Dog(name="<Dog Name>", owner="<Owner Name>", age=10) # age=10 by default
+    his_dog = dog_template.clone(owner='James')
+    her_dog = dog_template.clone(name="Husky", owner="Bella", age=5, note="Super Cute")
+    print(his_dog.get_info()) # {'name': '<Dog Name>', 'owner': 'James', 'age': 10}
+    print(her_dog.get_info()) # {'name': 'Husky', 'owner': 'Bella', 'age': 5}
+    print(her_dog.note)       # Super Cute
+```
+
+[:link: Back to Index](#index)
+
+### tic
+
+Plazy version: 0.1.5+
+
+Start timer
+
+**plazy.tic(**
+
+- **&#42;names**: name (list)
+
+**)**
+
+``` python
+import plazy
+
+def foo():
+    total = 0
+    for _ in range(100000):
+        total += 1
+    return total
+
+if __name__ == "__main__":
+    plazy.tic()                 # T1
+    plazy.tic("B")              # T2
+    plazy.tic("C", "D", "E")    # T3
+    foo()
+    dt1 = plazy.toc()           # elapsed time since T1
+    dt2 = plazy.toc("B")        # elapsed time since T2
+    dt3 = plazy.toc("C", "D")   # elapsed time since T3
+    foo()
+    dt4 = plazy.toc("E")        # elapsed time since T3
+    dt5 = plazy.toc("B")        # elapsed time since T2
+    print(dt1)                  # 0.009924173355102539
+    print(dt2)                  # 0.009925603866577148
+    print(dt3)                  # [0.00992727279663086, 0.00992727279663086]
+    print(dt4)                  # 0.020497798919677734
+    print(dt5)                  # 0.020506620407104492
+```
+
+[:link: Back to Index](#index)
+
+### toc
+
+Plazy version: 0.1.5+
+
+Get elapsed time(s) by name(s)
+
+**plazy.toc(**
+
+- **&#42;names**: name (list)
+- **default**: default value if name not found. Default: 0
+
+**)**
+
+``` python
+import plazy
+
+def foo():
+    total = 0
+    for _ in range(100000):
+        total += 1
+    return total
+
+if __name__ == "__main__":
+    plazy.tic()
+    foo()
+    elapsed_seconds = plazy.toc()                   # 0.0098724365234375
+    elapsed_invalid = plazy.toc("B", default=-1)    # -1 (name "B" does not exist, return default value)
+```
+
+[:link: Back to Index](#index)
+
+### ts2dt
+
+Plazy version: 0.1.5+
+
+Convert timestamp to datetime string
+
+**plazy.ts2dt(**
+
+- **ts**: timestamp string
+- **format**: datetime format. Default: "%Y/%m/%d %H:%M:%S.%f"
+
+**)**
+
+``` python
+import time
+import plazy
+
+if __name__ == "__main__":
+    res = plazy.ts2dt(time.time()) # 2021/08/28 08:48:05.451271
+```
+
+[:link: Back to Index](#index)
+
+### dt2ts
+
+Plazy version: 0.1.5+
+
+Convert datetime object / datetime string to timestamp
+
+**plazy.dt2ts(**
+
+- **dt**: datetime object or datetime string
+- **format**: datetime format. Default: "%Y/%m/%d %H:%M:%S.%f"
+
+**)**
+
+``` python
+import time
+import plazy
+
+if __name__ == "__main__":
+    res = plazy.dt2ts("2021/08/28 08:48:05.451271") # 1630140485.451271
+    print(res)
 ```
 
 [:link: Back to Index](#index)
