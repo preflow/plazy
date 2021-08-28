@@ -1,4 +1,4 @@
-<img src='https://img.shields.io/pypi/l/plazy.svg'> <img src='https://codecov.io/gh/kyzas/plazy/branch/master/graph/badge.svg'> <img src='https://img.shields.io/pypi/pyversions/plazy.svg'> <img src='https://img.shields.io/pypi/v/plazy.svg'> <img src='https://img.shields.io/pypi/dm/plazy.svg'> <img src='https://img.shields.io/badge/code%20style-black-000000.svg'>
+<img src='https://img.shields.io/pypi/l/plazy.svg'> <img src='https://codecov.io/gh/kyzas/plazy/branch/master/graph/badge.svg'> <img src='https://img.shields.io/pypi/pyversions/plazy.svg'> <img src='https://img.shields.io/pypi/v/plazy.svg'> <img src='https://img.shields.io/pypi/dm/plazy.svg'> <img src='https://img.shields.io/badge/code%20style-black-000000.svg'> <img src='https://readthedocs.org/projects/plazy/badge/?version=latest&style=plastic'>
 
 # plazy
 Utilities for lazy Python developers
@@ -17,6 +17,8 @@ pip install plazy
   - [@plazy.cloneable](#cloneable)
   - [plazy.tic(&#42;names)](#tic)
   - [plazy.toc(&#42;names, default=0)](#toc)
+  - [plazy.ts2dt(ts, format="%Y/%m/%d %H:%M:%S.%f")](#ts2dt)
+  - [plazy.dt2ts(dt, format="%Y/%m/%d %H:%M:%S.%f")](#dt2ts)
 - [Data](#data)
   - [plazy.b64encode(value, pretty=False)](#b64encode)
   - [plazy.b64decode(value)](#b64decode)
@@ -111,6 +113,8 @@ if __name__ == "__main__":
 Plazy version: 0.1.5+
 
 Assign attributes of class with the passed arguments automatically.
+
+
 
 **@plazy.auto_assign**
 
@@ -287,6 +291,53 @@ if __name__ == "__main__":
     foo()
     elapsed_seconds = plazy.toc()                   # 0.0098724365234375
     elapsed_invalid = plazy.toc("B", default=-1)    # -1 (name "B" does not exist, return default value)
+```
+
+[:link: Back to Index](#index)
+
+### ts2dt
+
+Plazy version: 0.1.5+
+
+Convert timestamp to datetime string
+
+**plazy.ts2dt(**
+
+- **ts**: timestamp string
+- **format**: datetime format. Default: "%Y/%m/%d %H:%M:%S.%f"
+
+**)**
+
+``` python
+import time
+import plazy
+
+if __name__ == "__main__":
+    res = plazy.ts2dt(time.time()) # 2021/08/28 08:48:05.451271
+```
+
+[:link: Back to Index](#index)
+
+### dt2ts
+
+Plazy version: 0.1.5+
+
+Convert datetime object / datetime string to timestamp
+
+**plazy.dt2ts(**
+
+- **dt**: datetime object or datetime string
+- **format**: datetime format. Default: "%Y/%m/%d %H:%M:%S.%f"
+
+**)**
+
+``` python
+import time
+import plazy
+
+if __name__ == "__main__":
+    res = plazy.dt2ts("2021/08/28 08:48:05.451271") # 1630140485.451271
+    print(res)
 ```
 
 [:link: Back to Index](#index)

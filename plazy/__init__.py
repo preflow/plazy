@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from . import data
+
 from .coding import (
     auto_assign,
     auto_assign_strict,
