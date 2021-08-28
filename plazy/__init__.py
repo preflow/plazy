@@ -20,6 +20,8 @@ from .data import (
     b64decode,
     unique,
     is_number,
+    dt2ts,
+    ts2dt,
 )
 
 __version__ = "0.1.5"
@@ -37,5 +39,7 @@ __all__ = [
     "b64decode",
     "unique",
     "is_number",
+    "dt2ts",
+    "ts2dt",
     "setattr_from_dict",
 ]

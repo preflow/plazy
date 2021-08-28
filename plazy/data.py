@@ -1,5 +1,19 @@
 # -*- coding: utf-8 -*-
 import base64
+from datetime import datetime
+
+
+def ts2dt(ts, format="%Y/%m/%d %H:%M:%S.%f"):
+    return datetime.fromtimestamp(ts).strftime(format)
+
+
+def dt2ts(dt, format="%Y/%m/%d %H:%M:%S.%f"):
+    """
+    dt: datetime object or string. Eg: datetime(2018, 1, 1, 12, 0, 0), "2021/08/28 13:27:53.3245"
+    """
+    if isinstance(dt, str):
+        dt = datetime.strptime(dt, format)
+    return dt.timestamp()
 
 
 def b64encode(value, pretty=False):
