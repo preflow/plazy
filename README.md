@@ -15,8 +15,8 @@ pip install plazy
   - [@plazy.auto_assign](#auto_assign)
   - [@plazy.auto_assign_strict](#auto_assign_strict)
   - [@plazy.cloneable](#cloneable)
-  - [plazy.tic](#tic)
-  - [plazy.toc](#toc)
+  - [plazy.tic(&#42;names)](#tic)
+  - [plazy.toc(&#42;names, default=0)](#toc)
 - [Data](#data)
   - [plazy.b64encode(value, pretty=False)](#b64encode)
   - [plazy.b64decode(value)](#b64decode)
@@ -227,7 +227,7 @@ Start timer
 
 **plazy.tic(**
 
-- **\*names***: name list
+- **&#42;names**: name (list)
 
 **)**
 
@@ -268,7 +268,7 @@ Get elapsed time(s) by name(s)
 
 **plazy.toc(**
 
-- **\*names***: name list
+- **&#42;names**: name (list)
 - **default**: default value if name not found. Default: 0
 
 **)**
